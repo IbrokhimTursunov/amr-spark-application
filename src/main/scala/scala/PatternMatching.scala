@@ -87,7 +87,23 @@ object PatternMatching extends App {
   case class Sum(e1: Expr, e2: Expr) extends Expr
   case class Prod(e1: Expr, e2: Expr) extends Expr
 
-  def show(e: Expr): String = ???
+
+  def show(e: Expr): String = e match {
+    case Number(n) => n.toString
+    case Sum(n1, n2) => {
+      val n1Str = show(n1)
+      val n2Str = show(n2)
+      s"$n1Str + $n2Str"
+    }
+    case Prod(n1, n2) => {
+      val n1Str = show(n1)
+      val n2Str = show(n2)
+      val n1StrFinal = if (n1Str contains "+") s"($n1Str)" else n1Str
+      val n2StrFinal = if (n2Str contains "+") s"($n2Str)" else n2Str
+      s"$n1StrFinal * $n2StrFinal"
+    }
+    case _ => ""
+  }
 
   println(show(Sum(Number(2), Number(3))))   //   2 + 3
   println(show(Sum(Sum(Number(2), Number(3)), Number(4)))) //   2 + 3 + 4
